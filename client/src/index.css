@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.25in 0.5in 0.5in 0.5in;
+  }
+
+  header,
+  nav {
+    display: none !important;
+  }
+
+  body,
+  html,
+  main {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Allow colored shift pills to print */
+  table {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    width: 100% !important;
+    font-size: 9pt !important;
+  }
+
+  /* Bold all table text */
+  table * {
+    font-weight: bold !important;
+  }
+
+  /* Override dark cell backgrounds; colored child divs are unaffected */
+  th,
+  td {
+    background-color: white !important;
+    color: black !important;
+    border-color: #666 !important;
+    border-width: 1.5px !important;
+    padding: 1px 3px !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Header row shading */
+  thead th {
+    background-color: #e0e0e0 !important;
+  }
+
+  /* Hide hours column */
+  th:last-child,
+  td:last-child {
+    display: none !important;
+  }
+
+  /* Shift pills: pastel wash via filter; black stays black through filter */
+  table td div[style*="background-color"] {
+    filter: saturate(0.4) brightness(1.6) !important;
+    color: black !important;
+    font-size: 10pt !important;
+  }
+
+  /* Name column larger than pill text */
+  table td:first-child {
+    font-size: 12pt !important;
+  }
+
+  /* Hide violation indicator dots (amber absolute-positioned dots) */
+  table td span.absolute {
+    display: none !important;
+  }
+
+  /* Force all cell spans (e.g. OFF label) to black */
+  table td span {
+    color: black !important;
+  }
+
+  /* Hide lock icons */
+  table td svg {
+    display: none !important;
+  }
+
+  /* Remove sticky left-column positioning (breaks in print layout) */
+  .sticky {
+    position: static !important;
+  }
+
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+}
