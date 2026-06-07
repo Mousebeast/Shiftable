@@ -1,0 +1,16 @@
+node_modules/
+client/node_modules/
+client/dist/
+.git/
+.env
+*.db
+*.db-wal
+*.db-shm
+install/
+tests/
+cmd/
+.github/
+*.test.js
+*.spec.js
+screenshots/
+scripts/capture-screenshots.js
