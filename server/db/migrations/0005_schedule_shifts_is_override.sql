@@ -1,0 +1,1 @@
+ALTER TABLE schedule_shifts ADD COLUMN is_override INTEGER NOT NULL DEFAULT 0;

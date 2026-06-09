@@ -1,0 +1,15 @@
+node_modules
+client/node_modules
+client/dist
+.env
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+e2e/test-credentials.json
+FEATURES_TMP.md
+
+# Generated wizard build artifacts
+cmd/setup/icon.ico
+cmd/setup/resource.rc
+cmd/setup/resource.syso
