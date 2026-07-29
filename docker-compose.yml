@@ -1,0 +1,66 @@
+services:
+  app:
+    image: ghcr.io/mousebeast/shiftable:latest
+    volumes:
+      - shiftable-data:/app/data
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      DB_PATH: /app/data/shiftable.db
+      # The restaurant's local timezone. Dates and "today" are resolved in the
+      # container's local time, so leaving this at UTC for a non-UTC restaurant
+      # rolls the day over at the wrong moment. Set TZ in .env.
+      TZ: ${TZ:-UTC}
+      # Which day the schedule week starts on: monday (default) or sunday.
+      # Fixed at first run — changing it later reinterprets every stored week.
+      WEEK_START: ${WEEK_START:-monday}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - certbot-certs:/etc/letsencrypt:ro
+      - certbot-www:/var/www/certbot
+    environment:
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-certs:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: /bin/sh
+    command: >-
+      -c "trap exit TERM;
+          while :; do
+            certbot renew --webroot -w /var/www/certbot --quiet;
+            sleep 12h & wait $${!};
+          done"
+    restart: unless-stopped
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    environment:
+      - SUBDOMAINS=${DUCKDNS_SUBDOMAIN}
+      - TOKEN=${DUCKDNS_TOKEN}
+      - LOG_FILE=false
+    restart: unless-stopped
+
+volumes:
+  shiftable-data:
+  certbot-certs:
+  certbot-www:

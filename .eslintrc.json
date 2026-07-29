@@ -1,0 +1,17 @@
+{
+  "root": true,
+  "env": { "node": true, "es2022": true },
+  "parserOptions": { "ecmaVersion": "latest", "sourceType": "script" },
+  "extends": "eslint:recommended",
+  "ignorePatterns": ["client/", "node_modules/", "cmd/", "install/"],
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "no-constant-condition": ["error", { "checkLoops": false }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js"],
+      "env": { "jest": true }
+    }
+  ]
+}

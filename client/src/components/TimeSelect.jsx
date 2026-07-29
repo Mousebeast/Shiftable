@@ -1,0 +1,49 @@
+const OPTIONS = Array.from({ length: 48 }, (_, i) => {
+  const totalMins = i * 30;
+  const h = Math.floor(totalMins / 60);
+  const m = totalMins % 60;
+  const hh = String(h).padStart(2, '0');
+  const mm = String(m).padStart(2, '0');
+  const period = h < 12 ? 'AM' : 'PM';
+  const h12 = h % 12 || 12;
+  return { value: `${hh}:${mm}`, label: `${h12}:${mm} ${period}` };
+});
+
+export default function TimeSelect({ value, onChange, className = '' }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={`bg-gray-800 border border-gray-600 text-gray-100 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${className}`}
+    >
+      {OPTIONS.map((o) => (
+        <option key={o.value} value={o.value}>{o.label}</option>
+      ))}
+    </select>
+  );
+}
+
+export function toDisplayTime(hhmm) {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  const period = h < 12 ? 'AM' : 'PM';
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${period}`;
+}
+
+/**
+ * Compact time for dense grids: 15:00 → "3p", 06:30 → "6:30a".
+ *
+ * Minutes are dropped only when they are :00, so half-hour shifts stay exact.
+ * The meridiem is kept — shortened, not removed — because template names are not
+ * reliably time-bearing across installs ("Lunch", "Dinner", "Open"), and a bare
+ * 12:00 or 7:00 on a staffing grid is genuinely ambiguous.
+ *
+ * Prefer toDisplayTime anywhere there is room; this trades polish for width.
+ */
+export function toCompactTime(hhmm) {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  const period = h < 12 ? 'a' : 'p';
+  const hour = h % 12 || 12;
+  return m === 0 ? `${hour}${period}` : `${hour}:${String(m).padStart(2, '0')}${period}`;
+}
