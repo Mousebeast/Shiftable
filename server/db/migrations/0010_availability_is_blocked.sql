@@ -1,0 +1,1 @@
+ALTER TABLE availability ADD COLUMN is_blocked TINYINT NOT NULL DEFAULT 0;

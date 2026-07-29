@@ -1,0 +1,19 @@
+[Unit]
+Description=Shiftable Restaurant Scheduling App
+After=network.target
+
+[Service]
+Type=simple
+User=shiftable
+WorkingDirectory=/opt/shiftable
+EnvironmentFile=/opt/shiftable/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server/index.js
+Restart=on-failure
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=shiftable
+
+[Install]
+WantedBy=multi-user.target

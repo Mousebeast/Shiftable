@@ -1,0 +1,21 @@
+node_modules
+client/node_modules
+client/dist
+.env
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+e2e/test-credentials.json
+FEATURES_TMP.md
+
+# Generated wizard build artifacts
+cmd/setup/icon.ico
+cmd/setup/resource.rc
+cmd/setup/resource.syso
+
+# Compiled wizard binaries — ~7MB each, built by CI on the public repo.
+# Never commit these; the release workflow attaches them as release assets.
+cmd/setup/setup
+cmd/setup/setup.exe
+cmd/setup/setup-*
